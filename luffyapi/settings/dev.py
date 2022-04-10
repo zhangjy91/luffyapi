@@ -45,19 +45,40 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+
+    'corsheaders',
+
+    'xadmin',
+    'crispy_forms',
+    'reversion',
+    
     'user',
     'home',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    #第三方处理跨域中间件
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #自己编写的处理跨域
+    # 'luffyapi.utils.middle.MyMiddle',
+
+
+
 ]
+
 
 ROOT_URLCONF = 'luffyapi.urls'
 
@@ -139,5 +160,122 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+# AUTH_USER_MODEL='user.user'
 
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER':'luffyapi.utils.exceptions.common_exception_handler',
+}
+
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {  # 日志格式定义
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(lineno)d %(process)d %(thread)d %(message)s"
+        },
+        "simple": {
+            "format": "%(levelname)s %(module)s %(lineno)d %(message)s"
+        },
+    },
+    "filters": {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "filters": ['require_debug_true'],
+            "class": "logging.StreamHandler",
+            "formatter": "simple"
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            # "filename": "/var/log/xiangmu/default.log",    # 日志存放路径
+            "filename":os.path.join(os.path.dirname(BASE_DIR),"logs","luffyapi.log"),
+            "maxBytes": 1024*1024*50,  # 5MB
+            "backupCount": 10,
+            "formatter": "verbose",
+            "encoding":"utf-8"
+        },
+        # "mail_admins": {
+        #     "level": "ERROR",
+        #     "class": "django.utils.log.AdminEmailHandler",
+        #     "filters": [],
+        # },
+    },
+
+    #日志对象
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            # "level": "INFO",
+            "propagate": True,
+        },
+#         "django.request": {
+#             "handlers": ["console"],
+#             "level": "ERROR",
+#             "propagate": False,  # 不让特定的logger传播到它的上级
+#         },
+# """’django’是’django.request’的上级。这种层级关系的设计，使得低层次logger接收到的日志信息，也可以被上级logger收到。
+# 实践中，我们可以定义一个顶级的logger，用来接收所有下级logger的日志信息。这种传播可以在每个logger基础上进行控制.
+# 如果你不想让特定的logger传播到它的上级，可以关闭这个行为。通过设置'propagate': False,来实现。"""
+#         "xiangmu": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#             "filters": []
+#         },
+#         "app01": {
+#             "handlers": ["console", "default"],
+#             "level": "INFO",
+#             "filters": [],
+#             "propagate": True,
+#         },
+#         "app02": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#             "filters": [],
+#         },
+#         "app03": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#             "filters": [],
+#         }
+    }
+}
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:*',
+    'http://localhost:8080',
+]
+CORS_ALLOW_METHODS = (
+ 'DELETE',
+ 'GET',
+ 'OPTIONS',
+ 'PATCH',
+ 'POST',
+ 'PUT',
+ 'VIEW',
+)
+CORS_ALLOW_HEADERS = (
+ 'XMLHttpRequest',
+ 'X_FILENAME',
+ 'accept-encoding',
+ 'authorization',
+ 'content-type',
+ 'dnt',
+ 'origin',
+ 'user-agent',
+ 'x-csrftoken',
+ 'x-requested-with',
+ 'Pragma',
+)
