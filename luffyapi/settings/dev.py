@@ -53,9 +53,12 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'reversion',
-    
+    'django.conf',
+
     'user',
     'home',
+
+
 
 ]
 
@@ -279,3 +282,7 @@ CORS_ALLOW_HEADERS = (
  'x-requested-with',
  'Pragma',
 )
+
+# BANNER_COUNTER = 3
+
+from .const import *
