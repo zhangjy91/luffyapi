@@ -19,9 +19,11 @@ from django.views.static import serve
 from django.conf import settings
 
 import xadmin
+
 xadmin.autodiscover()
 
 from xadmin.plugins import xversion
+
 xversion.register_models()
 
 urlpatterns = [
@@ -29,5 +31,5 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('user/', include('user.urls')),
 
-    re_path('media/(?P<path>.*)', serve, {'document_root':settings.MEDIA_ROOT})
+    re_path('media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT})
 ]

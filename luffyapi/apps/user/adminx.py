@@ -5,8 +5,9 @@ from django.contrib import admin
 import xadmin
 from xadmin import views
 
-from luffyapi.apps.user.models import User
-from . import models
+# from luffyapi.apps.user.models import User
+from user.models import User
+from home.models import BannerModel
 
 class GlobalSettings(object):
     site_title = '路飞学堂'
@@ -15,4 +16,4 @@ class GlobalSettings(object):
 
 xadmin.site.register(views.CommAdminView, GlobalSettings)
 xadmin.site.register(User)
-xadmin.site.register(models.Banner)
+xadmin.site.register(BannerModel)

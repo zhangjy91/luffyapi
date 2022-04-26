@@ -24,3 +24,18 @@ def test(request):
     #     res['Access-Control-Allow-Origin'] = 'Content-Type'
     # print(res.content)
     return res
+
+
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin
+from rest_framework.viewsets import GenericViewSet
+
+from home.models import BannerModel
+from home.serializer import BannerModelSerializer
+
+from django.conf import settings
+
+class BannerView(GenericViewSet,ListModelMixin):
+    # queryset = BannerModel.objects.filter(is_delete=False, is_show=True).order_by('display_order')[:3]
+    queryset = BannerModel.objects.filter(is_delete=False, is_show=True).order_by('display_order')[:settings.BANNER_COUNTER]
+    serializer_class = BannerModelSerializer
