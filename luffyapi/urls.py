@@ -26,10 +26,22 @@ from xadmin.plugins import xversion
 
 xversion.register_models()
 
+# urlpatterns = [
+#     path('xadmin/', xadmin.site.urls),
+#     path('home/', include('home.urls')),
+#     path('user/', include('user.urls')),
+#
+#     re_path('media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT})
+# ]
+
+
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('home/', include('home.urls')),
     path('user/', include('user.urls')),
+    path('course/', include('course.urls')),
 
-    re_path('media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT})
+    # media文件夹路径打开了
+    re_path('media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
+
 ]

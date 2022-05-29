@@ -15,5 +15,9 @@ class GlobalSettings(object):
     menu_style = 'accordion'
 
 xadmin.site.register(views.CommAdminView, GlobalSettings)
+# xadmin.site.register(User)
+
+xadmin.site.unregister(User)
 xadmin.site.register(User)
+
 xadmin.site.register(BannerModel)

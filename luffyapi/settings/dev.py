@@ -55,10 +55,11 @@ INSTALLED_APPS = [
     'reversion',
     'django.conf',
 
-    'user',
     'home',
+    'user',
+    'course',
 
-
+    'django_filters',
 
 ]
 
@@ -116,6 +117,9 @@ DATABASES = {
         'USER':'luffapi',
         'PASSWORD':'luffyapi',
         'HOST':'127.0.0.1',
+        'OPTIONS':{
+                "init_command":"SET foreign_key_checks = 0;",
+                }
     }
 }
 
@@ -143,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'Asia/shanghai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -286,3 +290,33 @@ CORS_ALLOW_HEADERS = (
 # BANNER_COUNTER = 3
 
 from .const import *
+
+
+# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'user.User'
+
+import datetime
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA':datetime.timedelta(days=7),
+    # 'JWT_RESPONSE_PAYLOAD_HANDLER':'user.utils.jwt_response_payload_handler',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES':{
+        'sms':'1/m'
+    }
+}
+
+# redis配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100}
+            # "PASSWORD": "123",
+        }
+    }
+}
